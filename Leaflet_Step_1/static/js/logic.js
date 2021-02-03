@@ -21,9 +21,7 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-function markerSize(magnitude){
-    return magnitude * 5;
-};
+
 
 // Perform a GET request to the query URL
 d3.json(queryUrl).then(function(data) {
@@ -34,17 +32,21 @@ d3.json(queryUrl).then(function(data) {
 
     var earthquake_markers = []
 
+    function markerSize(magnitude){
+        return magnitude * 5;
+    };
+
     earthquakes.forEach(function(earthquake){
         earthquake_markers.push(
             L.circle(earthquake.coordinates, {
                 stroke: false,
                 fillOpacity: 0.75,
-                color:"white",
-                fillColor: "white",
+                color:"red",
+                fillColor: "red",
                 radius:markerSize(earthquake.properties.mag) 
             })
         )
-    });
+    }).addTo(myMap);
     
 
 
