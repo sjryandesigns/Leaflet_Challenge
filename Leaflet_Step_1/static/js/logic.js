@@ -26,6 +26,23 @@ d3.json(queryUrl).then(function(data) {
     console.log(data.features);
 
     var earthquakes = L.geoJSON(data.features);
+    console.log(earthquakes.coordinates[2])
+
+    // var earthquake_markers = []
+
+    // earthquakes.forEach(function(earthquake){
+    //     earthquake_markers.push(
+    //         L.circle(earthquake.coordinates, {
+    //             stroke: false,
+    //             fillOpacity: 0.75,
+    //             color:"white",
+    //             fillColor: "white",
+    //             radiusds: 
+    //         })
+    //     )
+    // }
+    
+    // )
 
 
 
@@ -42,7 +59,7 @@ d3.json(queryUrl).then(function(data) {
 
 
 
-
+});
 //     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
 //     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
 //     tileSize: 512,
@@ -77,5 +94,5 @@ d3.json(queryUrl).then(function(data) {
 //     collapsed: false
 //   }).addTo(myMap);
 
-// });
+
 
