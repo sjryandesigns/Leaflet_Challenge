@@ -76,11 +76,18 @@ function createMap(earthquakes) {
         layers: [basemap, earthquakes]
     });
 
+    // var legend = L.control({position: 'bottomright'});
 
+    // legend.onAdd = function() {
+    //     var div = L.DomUtil.create('div', 'info legend')
+    //     div.innerHTML = "<h3>EarthQuake Depth</h3><table><tr><th>>=4
 
+    // }
 
-
-
+    L.control.layers(baseMaps, overlayMaps, {
+        collapsed: false
+    }).addTo(myMap);
+    
 }
 
 
@@ -89,11 +96,7 @@ function createMap(earthquakes) {
     
 
 
-//     L.control.layers(baseMaps, overlayMaps, {
-//         collapsed: false
-//       }).addTo(myMap);
-    
-//     });
+
 
 
 
