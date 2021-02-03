@@ -1,6 +1,7 @@
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
+// Create function to determine marker size based on magnitude
 function markerSize(magnitude){
     if (magnitude === 0){
         return 1;
@@ -10,6 +11,7 @@ function markerSize(magnitude){
     }
 };
 
+// Function to determine marker color based on depth
 function markerColor(depth){
     if (depth > 90) {
         return '#FF0000';
@@ -24,24 +26,15 @@ function markerColor(depth){
         return '#CCFF00';
     }
     else if (depth >= 10) {
-        return '#66FF00';
+        return '#99FF00';
     }
     else {
-        return '#00FF00';
+        return '#33FF00';
     }
 };
 
 
-// function markerColor(d) {
-//     return d > 90  ? '#FF0000' :
-//            d > 70  ? '#FF6600' :
-//            d > 50  ? '#FFCC00' :
-//            d > 30  ? '#CCFF00' :
-//            d > 10  ? '#66FF00' :
-//                      '#00FF00';
-// }
-
-
+// Function to add marker with style options
 function addMarker (feature, location){
     var options = {
         stroke: true,
@@ -55,13 +48,16 @@ function addMarker (feature, location){
     return L.circleMarker(location, options);
 };
 
+// Function to add popup to marker with info
 function addPopup (feature, layer) {
 // cut code here 
     return layer.bindPopup("<h3>" + feature.properties.title + "</h3><hr><p>" + new Date(feature.properties.time)+ "</p>");
 };
 
+
+// Function to create map
 function createMap(earthquakes) {
-    // Add tile layer    
+    // Add tile layer
     var basemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
         tileSize: 512,
@@ -70,7 +66,7 @@ function createMap(earthquakes) {
         id: "mapbox/streets-v11",
         accessToken: API_KEY
     });
-
+    // Define base map object to hold base layer
     var baseMaps = {
         "Street Map": basemap,
     };
@@ -88,19 +84,14 @@ function createMap(earthquakes) {
         layers: [basemap, earthquakes]
     });
 
+    // Create map lengend and position
     var legend = L.control({position: 'bottomright'});
 
+    // Add legend to map
     legend.onAdd = function() {
         var div = L.DomUtil.create('div', 'info legend')
         var grades = [-10, 10, 30, 50, 70, 90];
-            // colors = [
-            //     '#00FF00',
-            //     '#66FF00',
-            //     '#CCFF00',
-            //     '#FFCC00',
-            //     '#FF6600',
-            //     '#FF0000'
-            // ];
+
         
         for (var i=0; i < grades.length; i++){
             div.innerHTML +=
@@ -114,6 +105,7 @@ function createMap(earthquakes) {
 
     legend.addTo(myMap);
 
+    // Create layer control and add to map, pass in base and overlay maps
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
