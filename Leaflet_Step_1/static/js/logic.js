@@ -22,7 +22,12 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 function markerSize(magnitude){
-    return magnitude * 5;
+    if (magnitude === 0){
+        return 1;
+    }
+    else {
+        return magnitude *5;
+    }
 };
 
 function markerColor(depth){
@@ -35,10 +40,10 @@ function markerColor(depth){
     else if (depth >= 50) {
         return '#FFCC00';
     }
-    else if (depth >= 50) {
+    else if (depth >= 30) {
         return '#CCFF00';
     }
-    else if (depth >= 50) {
+    else if (depth >= 10) {
         return '#66FF00';
     }
     else {
@@ -115,7 +120,7 @@ d3.json(queryUrl).then(function(data) {
     var labels = [];
 
     // Add min & max
-    var legendInfo = "<h1>Median Income</h1>" +
+    var legendInfo = "<h1>Earthquake Magnitude</h1>" +
       "<div class=\"labels\">" +
         "<div class=\"min\">" + limits[0] + "</div>" +
         "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
