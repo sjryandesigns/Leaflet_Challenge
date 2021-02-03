@@ -1,3 +1,14 @@
+var myMap = L.map("mapid", {
+    center: [
+      37.09, -95.71],
+    zoom: 5,
+    });
+
+
+
+
+
+
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
@@ -43,9 +54,5 @@ d3.json(queryUrl).then(function(data) {
     collapsed: false
   }).addTo(myMap);
 
-
-
-
-
-
 });
+
