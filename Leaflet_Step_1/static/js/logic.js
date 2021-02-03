@@ -10,43 +10,44 @@ function markerSize(magnitude){
     }
 };
 
-// function markerColor(depth){
-//     if (depth > 90) {
-//         return '#FF0000';
-//     }
-//     else if (depth >= 70) {
-//         return '#FF6600';
-//     }
-//     else if (depth >= 50) {
-//         return '#FFCC00';
-//     }
-//     else if (depth >= 30) {
-//         return '#CCFF00';
-//     }
-//     else if (depth >= 10) {
-//         return '#66FF00';
-//     }
-//     else {
-//         return '#00FF00';
-//     }
-// };
+function markerColor(depth){
+    if (depth > 90) {
+        return '#FF0000';
+    }
+    else if (depth >= 70) {
+        return '#FF6600';
+    }
+    else if (depth >= 50) {
+        return '#FFCC00';
+    }
+    else if (depth >= 30) {
+        return '#CCFF00';
+    }
+    else if (depth >= 10) {
+        return '#66FF00';
+    }
+    else {
+        return '#00FF00';
+    }
+};
 
 
-function markerColor(d) {
-    return d > 90  ? '#FF0000' :
-           d > 70  ? '#FF6600' :
-           d > 50  ? '#FFCC00' :
-           d > 30  ? '#CCFF00' :
-           d > 10  ? '#66FF00' :
-                     '#00FF000';
-}
+// function markerColor(d) {
+//     return d > 90  ? '#FF0000' :
+//            d > 70  ? '#FF6600' :
+//            d > 50  ? '#FFCC00' :
+//            d > 30  ? '#CCFF00' :
+//            d > 10  ? '#66FF00' :
+//                      '#00FF00';
+// }
 
 
 function addMarker (feature, location){
     var options = {
-        stroke: false,
+        stroke: true,
+        weight: .5,
         fillOpacity: 0.8,
-        color: markerColor(feature.geometry.coordinates[2]),
+        color: "black",
         fillColor: markerColor(feature.geometry.coordinates[2]),
         radius: markerSize(feature.properties.mag)
     }
@@ -55,8 +56,8 @@ function addMarker (feature, location){
 };
 
 function addPopup (feature, layer) {
-
-    return layer.bindPopup("<h3>" + feature.properties.title "</h3><hr><p>" + new Date(feature.properites.time)+ "</p>");
+// cut code here 
+    return layer.bindPopup("<h3>" + feature.properties.title + "</h3><hr><p>" + new Date(feature.properties.time)+ "</p>");
 };
 
 function createMap(earthquakes) {
@@ -91,8 +92,15 @@ function createMap(earthquakes) {
 
     legend.onAdd = function() {
         var div = L.DomUtil.create('div', 'info legend')
-            grades = [-10, 10, 30, 50, 70, 90],
-            labels = [];
+        var grades = [-10, 10, 30, 50, 70, 90];
+            // colors = [
+            //     '#00FF00',
+            //     '#66FF00',
+            //     '#CCFF00',
+            //     '#FFCC00',
+            //     '#FF6600',
+            //     '#FF0000'
+            // ];
         
         for (var i=0; i < grades.length; i++){
             div.innerHTML +=
@@ -113,7 +121,16 @@ function createMap(earthquakes) {
 }
 
 
+d3.json(queryUrl).then(function(data) {
+    console.log(data.features);
+    var earthquakes = L.geoJSON(data.features,{
+        onEachFeature: addPopup,
+        pointToLayer: addMarker
+    });
 
+    createMap(earthquakes);
+
+});
 
     
 
@@ -167,45 +184,5 @@ function createMap(earthquakes) {
 //         collapsed: false
 //     }).addTo(myMap);
 
-
-//     // Set up the legend
-//   var legend = L.control({ position: "bottomright" });
-//   legend.onAdd = function() {
-//     var div = L.DomUtil.create("div", "info legend");
-//     var limits = geojson.options.limits;
-//     var colors = geojson.options.colors;
-//     var labels = [];
-
-//     // Add min & max
-//     var legendInfo = "<h1>Earthquake Magnitude</h1>" +
-//       "<div class=\"labels\">" +
-//         "<div class=\"min\">" + limits[0] + "</div>" +
-//         "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
-//       "</div>";
-
-//     div.innerHTML = legendInfo;
-
-//     limits.forEach(function(limit, index) {
-//       labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
-//     });
-
-//     div.innerHTML += "<ul>" + labels.join("") + "</ul>";
-//     return div;
-//   };
-
-//   // Adding legend to the map
-//   legend.addTo(myMap);
-
-// });
-
 // Perform a GET request to the query URL
-d3.json(queryUrl).then(function(data) {
 
-    var earthquakes = L.geoJSON(data.features,{
-        onEachFeature: addPopup,
-        pointToLayer: addMarker
-    });
-
-    createMap(earthquakes);
-
-});
