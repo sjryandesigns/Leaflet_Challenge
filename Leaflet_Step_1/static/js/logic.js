@@ -48,32 +48,46 @@ function addPopup (feature, layer) {
     return layer.bindPopup("<h3>" + feature.properties.title "</h3><hr><p>" + new Date(feature.properites.time)+ "</p>");
 };
 
-//         // Add tile layer    
-//     var basemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-//         attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-//         tileSize: 512,
-//         maxZoom: 18,
-//         zoomOffset: -1,
-//         id: "mapbox/streets-v11",
-//         accessToken: API_KEY
-//     });
+function createMap(earthquakes) {
+    // Add tile layer    
+    var basemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+        tileSize: 512,
+        maxZoom: 18,
+        zoomOffset: -1,
+        id: "mapbox/streets-v11",
+        accessToken: API_KEY
+    });
 
-//     var baseMaps = {
-//         "Street Map": basemap,
-//         };
+    var baseMaps = {
+        "Street Map": basemap,
+    };
     
-//         // Create overlay object to hold our overlay layer
-//     var overlayMaps = {
-//         "Earthquakes": earthquakes
-//     };
+    // Create overlay object to hold our overlay layer
+    var overlayMaps = {
+        "Earthquakes": earthquakes
+    };
+
+    // Create initial map object
+    var myMap = L.map("mapid", {
+        center: [
+        37.09, -95.71],
+        zoom: 5,
+        layers: [basemap, earthquakes]
+    });
+
+
+
+
+
+
+}
+
+
+
+
     
-//     // Create initial map object
-//     var myMap = L.map("mapid", {
-//         center: [
-//         37.09, -95.71],
-//         zoom: 5,
-//         layers: [basemap, earthquakes]
-//     });
+
 
 //     L.control.layers(baseMaps, overlayMaps, {
 //         collapsed: false
