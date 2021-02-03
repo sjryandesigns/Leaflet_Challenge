@@ -10,26 +10,37 @@ function markerSize(magnitude){
     }
 };
 
-function markerColor(depth){
-    if (depth > 90) {
-        return '#FF0000';
-    }
-    else if (depth >= 70) {
-        return '#FF6600';
-    }
-    else if (depth >= 50) {
-        return '#FFCC00';
-    }
-    else if (depth >= 30) {
-        return '#CCFF00';
-    }
-    else if (depth >= 10) {
-        return '#66FF00';
-    }
-    else {
-        return '#00FF00';
-    }
-};
+// function markerColor(depth){
+//     if (depth > 90) {
+//         return '#FF0000';
+//     }
+//     else if (depth >= 70) {
+//         return '#FF6600';
+//     }
+//     else if (depth >= 50) {
+//         return '#FFCC00';
+//     }
+//     else if (depth >= 30) {
+//         return '#CCFF00';
+//     }
+//     else if (depth >= 10) {
+//         return '#66FF00';
+//     }
+//     else {
+//         return '#00FF00';
+//     }
+// };
+
+
+function markerColor(d) {
+    return d > 90  ? '#FF0000' :
+           d > 70  ? '#FF6600' :
+           d > 50  ? '#FFCC00' :
+           d > 30  ? '#CCFF00' :
+           d > 10  ? '#66FF00' :
+                     '#00FF000';
+}
+
 
 function addMarker (feature, location){
     var options = {
@@ -76,13 +87,24 @@ function createMap(earthquakes) {
         layers: [basemap, earthquakes]
     });
 
-    // var legend = L.control({position: 'bottomright'});
+    var legend = L.control({position: 'bottomright'});
 
-    // legend.onAdd = function() {
-    //     var div = L.DomUtil.create('div', 'info legend')
-    //     div.innerHTML = "<h3>EarthQuake Depth</h3><table><tr><th>>=4
+    legend.onAdd = function() {
+        var div = L.DomUtil.create('div', 'info legend')
+            grades = [-10, 10, 30, 50, 70, 90],
+            labels = [];
+        
+        for (var i=0; i < grades.length; i++){
+            div.innerHTML +=
+                '<i style="background:' + markerColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i+1] ? '&ndash;' + grades[i+1] + '<br>' : '+');
+        }
 
-    // }
+        return div;
+
+    };
+
+    legend.addTo(myMap);
 
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
