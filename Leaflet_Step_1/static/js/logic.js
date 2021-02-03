@@ -43,6 +43,10 @@ function addMarker (feature, location){
     return L.circleMarker(location, options);
 };
 
+function addPopup (feature, layer) {
+
+    return layer.bindPopup("<h3>" + feature.properties.title "</h3><hr><p>" + new Date(feature.properites.time)+ "</p>");
+};
 
 //         // Add tile layer    
 //     var basemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
